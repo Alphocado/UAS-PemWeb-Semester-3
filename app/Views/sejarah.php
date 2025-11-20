@@ -1,31 +1,28 @@
-<?php
-// app/Views/sejarah.php
-?>
-
-<div class="py-3">
-  <h2 class="mb-3">Sejarah & Filosofi Kuliner</h2>
+<div class="container py-4">
+  <h2 class="mb-4">Sejarah & Filosofi Kuliner Makassar</h2>
 
   <?php if (empty($list)): ?>
     <div class="alert alert-info">Belum ada konten sejarah yang tersedia.</div>
   <?php else: ?>
-    <div class="list-group">
+    <div class="row g-4">
       <?php foreach($list as $s):
-        // fields: id, makanan_id, isi, gambar, sumber, nama_makanan
-        $excerpt = substr(strip_tags($s['isi'] ?? ''), 0, 220);
-        $img = !empty($s['gambar']) ? base_url('assets/img/sejarah/'.$s['gambar']) : base_url('assets/img/hero/pembuka.jpeg');
+        $excerpt = substr(strip_tags($s['isi'] ?? ''), 0, 180);
+        $imgSrc = !empty($s['gambar_makanan']) 
+            ? 'data:' . ($s['mime_makanan'] ?? 'image/jpeg') . ';base64,' . base64_encode($s['gambar_makanan'])
+            : base_url('assets/img/hero/pembuka.jpeg');
       ?>
-      <a href="<?= base_url('sejarah/detail/'.intval($s['id'])) ?>" class="list-group-item list-group-item-action mb-3 shadow-sm">
-        <div class="row g-3">
-          <div class="col-md-3">
-            <img src="<?= esc($img) ?>" alt="<?= esc($s['nama_makanan'] ?? 'Gambar') ?>" class="img-fluid rounded" style="height:130px; object-fit:cover;">
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+          <img src="<?= esc($imgSrc) ?>" class="card-img-top" style="height:200px; object-fit:cover;" alt="<?= esc($s['nama_makanan'] ?? '-') ?>">
+          <div class="card-body">
+            <h5 class="card-title"><?= esc($s['nama_makanan'] ?? '-') ?></h5>
+            <p class="card-text small text-muted"><?= esc($excerpt) ?>...</p>
           </div>
-          <div class="col-md-9">
-            <h5 class="mb-1"><?= esc($s['nama_makanan'] ?? '—') ?></h5>
-            <p class="mb-1 text-muted small"><?= esc($excerpt) ?>...</p>
-            <small class="text-secondary">Sumber: <?= esc($s['sumber'] ?? '—') ?></small>
+          <div class="card-footer bg-transparent border-0">
+            <a href="<?= base_url('sejarah/'.$s['id']) ?>" class="btn btn-sm btn-primary w-100">Baca Selengkapnya</a>
           </div>
         </div>
-      </a>
+      </div>
       <?php endforeach; ?>
     </div>
   <?php endif; ?>

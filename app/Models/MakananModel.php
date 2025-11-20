@@ -4,9 +4,10 @@ use CodeIgniter\Model;
 
 class MakananModel extends Model
 {
-    protected $table = 'makanan';
+    protected $table      = 'makanan';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['nama'];
+    protected $allowedFields = ['nama','gambar','mime_type'];
+    protected $returnType = 'array';
 
     public function getAll()
     {
